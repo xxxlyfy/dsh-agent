@@ -115,6 +115,7 @@ export default class DshChatPlugin extends Plugin {
     this.runtime = new DshRuntime({
       vaultPath: this.vaultPath(),
       pluginDir: this.pluginDirAbs(),
+      clientVersion: this.manifest.version,
       getSettings: () => this.settings,
       onStatus: (status) => {
         if (status.phase === "ready") this.restartAttempts = 0;

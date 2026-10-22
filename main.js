@@ -929,6 +929,7 @@ class DshChatPlugin extends obsidian_1.Plugin {
         this.runtime = new runtime_ts_1.DshRuntime({
             vaultPath: this.vaultPath(),
             pluginDir: this.pluginDirAbs(),
+            clientVersion: this.manifest.version,
             getSettings: () => this.settings,
             onStatus: (status) => {
                 if (status.phase === "ready")
@@ -2100,7 +2101,7 @@ class DshRuntime {
             input: child.stdout,
             output: child.stdin,
             clientName: "obsidian-dsh-agent",
-            clientVersion: "0.1.0",
+            clientVersion: this.hooks.clientVersion,
             onUpdate: this.hooks.onUpdate,
             onPermission: this.hooks.onPermission,
             onLog: (entry) => {

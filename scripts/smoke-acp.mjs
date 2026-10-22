@@ -101,7 +101,7 @@ const client = new AcpClient({
   input: child.stdout,
   output: child.stdin,
   clientName: "dsh-chat-smoke",
-  clientVersion: "0.1.0",
+  clientVersion: "1.0.0",
   onUpdate: (params) => {
     updates += 1;
     const update = params.update ?? {};

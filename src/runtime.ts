@@ -395,6 +395,7 @@ function waitForExit(child: ChildProcess, timeoutMs: number): Promise<boolean> {
 export interface RuntimeHooks {
   vaultPath: string;
   pluginDir: string;
+  clientVersion: string;
   getSettings: () => RuntimeSettings;
   onStatus: (status: RuntimeStatus) => void;
   onLog: (line: string) => void;
@@ -535,7 +536,7 @@ export class DshRuntime {
       input: child.stdout!,
       output: child.stdin!,
       clientName: "obsidian-dsh-agent",
-      clientVersion: "0.1.0",
+      clientVersion: this.hooks.clientVersion,
       onUpdate: this.hooks.onUpdate,
       onPermission: this.hooks.onPermission,
       onLog: (entry) => {
