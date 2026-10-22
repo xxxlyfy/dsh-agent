@@ -1,0 +1,1151 @@
+/* DSH Agent - sidebar panel styles.
+   Layout language mirrors the Pi Agent plugin: compact brand header, framed
+   message cards with uppercase role rows, and a composer with context badges,
+   a roomy textarea and a run bar for model / reasoning effort. */
+
+.dsh-chat-container {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.dsh-chat-root {
+  /* 70% of Obsidian's default button elevation (a 30% flatter look). */
+  --dsh-button-shadow:
+    inset 0 0.35px 0.35px 0.35px rgba(255, 255, 255, 0.063),
+    0 1.4px 2.8px rgba(0, 0, 0, 0.105),
+    0 0.7px 1.05px rgba(0, 0, 0, 0.07),
+    0 0.7px 1.4px rgba(0, 0, 0, 0.14);
+  --dsh-button-bg: color-mix(in srgb, var(--interactive-normal, #333333) 70%, var(--background-primary));
+  --dsh-button-bg-hover: color-mix(
+    in srgb,
+    var(--interactive-hover, #3d3d3d) 70%,
+    var(--background-primary)
+  );
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  gap: 10px;
+  padding: 12px;
+}
+
+/* Header ------------------------------------------------------------------ */
+
+.dsh-chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 30px;
+}
+
+.dsh-chat-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.dsh-chat-brand-icon {
+  align-items: center;
+  color: var(--text-muted);
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 18px;
+  justify-content: center;
+  width: 18px;
+}
+
+.dsh-chat-brand-icon svg {
+  height: 18px;
+  width: 18px;
+}
+
+.dsh-chat-thread-title {
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  font-weight: 500;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dsh-chat-header-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 2px;
+}
+
+button.dsh-chat-header-action {
+  align-items: center;
+  background: var(--dsh-button-bg);
+  border: 0;
+  border-radius: 6px;
+  box-shadow: var(--dsh-button-shadow);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  height: 28px;
+  justify-content: center;
+  padding: 0;
+  width: 28px;
+}
+
+button.dsh-chat-header-action:hover,
+button.dsh-chat-header-action:focus-visible {
+  background: var(--dsh-button-bg-hover);
+  box-shadow: var(--dsh-button-shadow);
+  color: var(--text-normal);
+}
+
+.dsh-chat-header-action svg {
+  height: 16px;
+  width: 16px;
+}
+
+/* Status ------------------------------------------------------------------ */
+
+.dsh-chat-statusline {
+  align-items: center;
+  display: flex;
+  font-size: var(--font-ui-smaller);
+  gap: 6px;
+  margin-top: -4px;
+  min-height: 16px;
+  color: var(--text-faint);
+}
+
+.dsh-chat-status-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dsh-chat-dot {
+  border-radius: 50%;
+  flex: 0 0 auto;
+  height: 7px;
+  width: 7px;
+  background: var(--text-faint);
+}
+
+.dsh-chat-dot.is-ready {
+  background: var(--color-green);
+}
+
+.dsh-chat-dot.is-busy {
+  background: var(--interactive-accent);
+  animation: dsh-chat-pulse 1.2s ease-in-out infinite;
+}
+
+/* Working row inside the transcript: DSH role + pi-agent-style text shimmer. */
+.dsh-chat-working {
+  align-items: center;
+  color: var(--text-muted);
+  display: flex;
+  font-size: 12px;
+  font-weight: 600;
+  gap: 6px;
+  letter-spacing: 0.02em;
+  margin: 2px 0 10px;
+  padding-left: 2px;
+  text-transform: uppercase;
+}
+
+.dsh-chat-working-icon {
+  align-items: center;
+  color: var(--text-muted);
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 16px;
+  justify-content: center;
+  width: 16px;
+}
+
+.dsh-chat-working-icon svg {
+  height: 16px;
+  width: 16px;
+}
+
+.dsh-chat-working-title {
+  color: var(--text-normal);
+  font-weight: 600;
+}
+
+.dsh-chat-working-label {
+  animation: dsh-chat-activity-flow 1.2s linear infinite;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 28%,
+      color-mix(in srgb, var(--interactive-accent) 25%, transparent) 36%,
+      color-mix(in srgb, var(--interactive-accent) 70%, transparent) 45%,
+      var(--interactive-accent) 50%,
+      color-mix(in srgb, var(--interactive-accent) 70%, transparent) 55%,
+      color-mix(in srgb, var(--interactive-accent) 25%, transparent) 64%,
+      transparent 72%,
+      transparent 100%
+    ),
+    linear-gradient(var(--text-muted), var(--text-muted));
+  background-clip: text;
+  background-position:
+    140% 50%,
+    0 0;
+  background-repeat: no-repeat;
+  background-size:
+    220% 100%,
+    100% 100%;
+  color: var(--text-muted);
+  display: inline-block;
+  overflow: visible;
+  white-space: nowrap;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes dsh-chat-activity-flow {
+  0% {
+    background-position:
+      140% 50%,
+      0 0;
+  }
+  48%,
+  100% {
+    background-position:
+      -30% 50%,
+      0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dsh-chat-working-label {
+    animation: none;
+    background: none;
+    -webkit-text-fill-color: var(--text-muted);
+  }
+}
+
+.dsh-chat-dot.is-starting {
+  background: var(--color-orange);
+  animation: dsh-chat-pulse 1.2s ease-in-out infinite;
+}
+
+.dsh-chat-dot.is-error {
+  background: var(--color-red);
+}
+
+@keyframes dsh-chat-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.dsh-chat-banner {
+  border-radius: 6px;
+  background: rgba(var(--color-red-rgb), 0.1);
+  color: var(--text-error);
+  font-size: var(--font-ui-smaller);
+  padding: 6px 8px;
+}
+
+/* Messages ---------------------------------------------------------------- */
+
+.dsh-chat-messages-wrap {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 180px;
+  position: relative;
+}
+
+.dsh-chat-messages {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.dsh-chat-items {
+  display: flex;
+  flex-direction: column;
+}
+
+button.dsh-chat-jump {
+  align-items: center;
+  background: var(--dsh-button-bg);
+  border: 1px solid color-mix(in srgb, var(--background-modifier-border) 80%, transparent);
+  border-radius: 50%;
+  bottom: 12px;
+  box-shadow: var(--dsh-button-shadow);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  height: 26px;
+  justify-content: center;
+  padding: 0;
+  position: absolute;
+  right: 14px;
+  width: 26px;
+}
+
+/* Empty state ------------------------------------------------------------- */
+
+.dsh-chat-empty {
+  align-items: center;
+  color: var(--text-muted);
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+  max-width: 92%;
+  padding: 18px 8px;
+  text-align: center;
+}
+
+.dsh-chat-empty-icon {
+  color: color-mix(in srgb, var(--text-muted) 35%, transparent);
+  display: inline-flex;
+  margin-bottom: 8px;
+}
+
+.dsh-chat-empty-icon svg {
+  height: 34px;
+  width: 34px;
+}
+
+.dsh-chat-empty-title {
+  color: var(--text-normal);
+  font-size: var(--font-ui-medium);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.dsh-chat-empty-hint {
+  font-size: var(--font-ui-smaller);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.dsh-chat-empty-examples {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+button.dsh-chat-example {
+  background: color-mix(in srgb, var(--background-secondary) 70%, var(--background-primary));
+  border: 1px solid color-mix(in srgb, var(--background-modifier-border) 80%, transparent);
+  border-radius: 8px;
+  box-shadow: var(--dsh-button-shadow);
+  color: var(--text-normal);
+  cursor: pointer;
+  font-size: var(--font-ui-smaller);
+  max-width: 100%;
+  padding: 3px 10px;
+}
+
+button.dsh-chat-example:hover {
+  background: var(--dsh-button-bg-hover);
+  box-shadow: var(--dsh-button-shadow);
+}
+
+/* Messages ---------------------------------------------------------------- */
+
+.dsh-chat-message {
+  margin-bottom: 12px;
+  min-width: 0;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.dsh-chat-message:last-child {
+  margin-bottom: 0;
+}
+
+.dsh-chat-message-role {
+  align-items: center;
+  color: var(--text-muted);
+  display: flex;
+  font-size: 12px;
+  font-weight: 600;
+  gap: 5px;
+  margin-bottom: 4px;
+  min-height: 20px;
+  text-transform: uppercase;
+}
+
+.dsh-chat-message-role-title {
+  align-items: center;
+  display: inline-flex;
+  flex: 1;
+  gap: 5px;
+  min-width: 0;
+}
+
+.dsh-chat-role-icon {
+  align-items: center;
+  color: var(--text-faint);
+  display: inline-flex;
+  height: 14px;
+  justify-content: center;
+  width: 14px;
+}
+
+.dsh-chat-role-icon svg {
+  height: 14px;
+  width: 14px;
+}
+
+.dsh-chat-message-actions {
+  display: inline-flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 100ms ease-in-out;
+}
+
+.dsh-chat-message:hover .dsh-chat-message-actions,
+.dsh-chat-message:focus-within .dsh-chat-message-actions {
+  opacity: 1;
+}
+
+.dsh-chat-message-action {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 5px;
+  box-shadow: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  height: 24px;
+  justify-content: center;
+  padding: 0;
+  width: 24px;
+}
+
+.dsh-chat-message-action:hover:not(:disabled),
+.dsh-chat-message-action:focus-visible:not(:disabled) {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+.dsh-chat-message-action:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.dsh-chat-message-action svg {
+  height: 14px;
+  width: 14px;
+}
+
+.dsh-chat-message-content {
+  background: var(--background-secondary-alt, var(--background-secondary));
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  color: var(--text-normal);
+  cursor: text;
+  font-size: var(--font-ui-medium);
+  line-height: var(--line-height-normal);
+  overflow: auto;
+  padding: 10px;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.dsh-chat-message.is-assistant .dsh-chat-message-content {
+  border-color: var(--background-modifier-border-hover);
+}
+
+.dsh-chat-message.is-user .dsh-chat-message-content {
+  background: color-mix(in srgb, var(--interactive-accent) 14%, var(--background-primary-alt));
+  border-color: color-mix(
+    in srgb,
+    var(--interactive-accent) 32%,
+    var(--background-modifier-border)
+  );
+}
+
+.dsh-chat-message.is-user .dsh-chat-message-role,
+.dsh-chat-message.is-user .dsh-chat-role-icon {
+  color: color-mix(in srgb, var(--interactive-accent) 82%, var(--text-muted));
+}
+
+.dsh-chat-user-text {
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.dsh-chat-user-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.dsh-chat-tag {
+  background: var(--background-modifier-hover);
+  border-radius: 4px;
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  max-width: 100%;
+  overflow: hidden;
+  padding: 1px 6px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dsh-chat-markdown {
+  font-size: var(--font-ui-medium);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.dsh-chat-markdown > *:first-child {
+  margin-top: 0;
+}
+
+.dsh-chat-markdown > *:last-child {
+  margin-bottom: 0;
+}
+
+.dsh-chat-markdown pre {
+  overflow-x: auto;
+}
+
+.dsh-chat-typing {
+  color: var(--text-faint);
+  letter-spacing: normal;
+}
+
+.dsh-chat-typing .dsh-chat-working-label {
+  font-size: var(--font-ui-smaller);
+}
+
+/* Thinking ---------------------------------------------------------------- */
+
+.dsh-chat-thinking {
+  margin-bottom: 8px;
+}
+
+.dsh-chat-thinking summary {
+  align-items: center;
+  color: var(--text-faint);
+  cursor: pointer;
+  display: flex;
+  font-size: var(--font-ui-smaller);
+  gap: 4px;
+  list-style: none;
+  text-transform: uppercase;
+}
+
+.dsh-chat-thinking summary::-webkit-details-marker {
+  display: none;
+}
+
+.dsh-chat-thinking-chevron {
+  display: inline-flex;
+  height: 12px;
+  transition: transform 100ms ease-in-out;
+  width: 12px;
+}
+
+.dsh-chat-thinking-chevron svg {
+  height: 12px;
+  width: 12px;
+}
+
+.dsh-chat-thinking[open] .dsh-chat-thinking-chevron {
+  transform: rotate(90deg);
+}
+
+.dsh-chat-thinking-content {
+  border-left: 2px solid var(--background-modifier-border);
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  line-height: 1.5;
+  margin-top: 4px;
+  max-height: 260px;
+  overflow-y: auto;
+  padding-left: 8px;
+}
+
+/* Tools ------------------------------------------------------------------- */
+
+.dsh-chat-message.is-tool .dsh-chat-message-content {
+  background: var(--background-secondary);
+  padding: 6px 10px;
+}
+
+.dsh-chat-tool-status {
+  color: var(--text-muted);
+  flex: 0 0 auto;
+  font-size: var(--font-ui-smaller);
+  margin-left: auto;
+  text-transform: none;
+}
+
+.dsh-chat-tool-count {
+  color: var(--text-faint);
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
+  margin-left: 6px;
+  text-transform: none;
+}
+
+.dsh-chat-tool-status.is-completed {
+  color: var(--color-green);
+}
+
+.dsh-chat-tool-status.is-failed {
+  color: var(--text-error);
+}
+
+.dsh-chat-tool-status.is-in_progress {
+  color: var(--color-orange);
+}
+
+.dsh-chat-tool-details summary {
+  color: var(--text-faint);
+  cursor: pointer;
+  font-size: var(--font-ui-smaller);
+}
+
+.dsh-chat-tool-label {
+  color: var(--text-faint);
+  font-size: var(--font-ui-smaller);
+  margin-top: 6px;
+}
+
+.dsh-chat-tool-input {
+  background: var(--background-primary);
+  border-radius: 4px;
+  font-size: var(--font-ui-smaller);
+  margin: 2px 0 0;
+  max-height: 180px;
+  overflow: auto;
+  padding: 6px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.dsh-chat-tool-empty {
+  color: var(--text-faint);
+}
+
+/* Approval ---------------------------------------------------------------- */
+
+.dsh-chat-approval {
+  background: color-mix(in srgb, var(--color-orange) 9%, var(--background-secondary-alt, var(--background-secondary)));
+  border-color: var(--color-orange);
+}
+
+.dsh-chat-permission-title {
+  font-weight: 600;
+}
+
+.dsh-chat-permission-tool {
+  color: var(--text-muted);
+  font-family: var(--font-monospace);
+  font-size: var(--font-ui-smaller);
+  margin-top: 2px;
+}
+
+.dsh-chat-permission-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.dsh-chat-permission-decision {
+  color: var(--text-muted);
+  display: inline-block;
+  font-size: var(--font-ui-smaller);
+  margin-top: 6px;
+}
+
+.dsh-chat-permission-decision.is-allowed,
+.dsh-chat-permission-decision.is-auto {
+  color: var(--color-green);
+}
+
+.dsh-chat-permission-decision.is-rejected,
+.dsh-chat-permission-decision.is-cancelled {
+  color: var(--text-faint);
+}
+
+/* Notices ----------------------------------------------------------------- */
+
+.dsh-chat-message.is-notice {
+  color: var(--text-faint);
+  font-size: var(--font-ui-smaller);
+  margin-bottom: 8px;
+  padding: 2px 0;
+  text-align: center;
+}
+
+.dsh-chat-message.is-notice[data-level="warn"] {
+  color: var(--text-warning);
+}
+
+.dsh-chat-message.is-notice[data-level="error"] {
+  color: var(--text-error);
+}
+
+/* Composer ---------------------------------------------------------------- */
+
+.dsh-chat-composer {
+  display: grid;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.dsh-chat-composer-top {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  min-height: 22px;
+  width: 100%;
+}
+
+.dsh-chat-usage {
+  color: var(--text-faint);
+  font-size: var(--font-ui-smaller);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.dsh-chat-context-badges {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+button.dsh-chat-context-badge {
+  align-items: center;
+  background: color-mix(in srgb, var(--background-secondary) 70%, var(--background-primary));
+  border: 1px solid color-mix(in srgb, var(--background-modifier-border) 80%, transparent);
+  border-radius: var(--radius-s);
+  box-shadow: var(--dsh-button-shadow);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: var(--font-ui-smaller);
+  gap: 4px;
+  min-height: 20px;
+  padding: 0 7px;
+}
+
+button.dsh-chat-context-badge:hover {
+  background: var(--dsh-button-bg-hover);
+  box-shadow: var(--dsh-button-shadow);
+}
+
+button.dsh-chat-context-badge.is-active {
+  background: color-mix(in srgb, var(--interactive-accent) 14%, var(--background-secondary));
+  border-color: color-mix(
+    in srgb,
+    var(--interactive-accent) 32%,
+    var(--background-modifier-border)
+  );
+  color: var(--text-normal);
+}
+
+.dsh-chat-context-badge-icon {
+  align-items: center;
+  display: inline-flex;
+  height: 13px;
+  width: 13px;
+}
+
+.dsh-chat-context-badge-icon svg {
+  height: 13px;
+  width: 13px;
+}
+
+.dsh-chat-context-badge-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dsh-chat-input {
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: var(--text-normal);
+  font-family: var(--font-interface);
+  font-size: var(--font-ui-medium);
+  line-height: var(--line-height-normal);
+  max-height: 240px;
+  min-height: 76px;
+  overflow-y: auto;
+  padding: 8px 10px;
+  resize: none;
+  width: 100%;
+}
+
+.dsh-chat-input:focus,
+.dsh-chat-input:focus-visible {
+  border-color: var(--interactive-accent);
+  box-shadow: 0 0 0 1px var(--interactive-accent);
+  outline: none;
+}
+
+.dsh-chat-composer-bar {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+}
+
+button.dsh-chat-run-setting {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  box-shadow: none;
+  color: var(--text-normal);
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 1 auto;
+  font-size: var(--font-ui-smaller);
+  gap: 3px;
+  height: 28px;
+  max-width: 46%;
+  min-width: 0;
+  padding: 0 4px;
+}
+
+button.dsh-chat-run-setting:hover,
+button.dsh-chat-run-setting:focus,
+button.dsh-chat-run-setting:focus-visible {
+  background: var(--background-modifier-hover);
+  box-shadow: none;
+  outline: none;
+}
+
+button.dsh-chat-run-setting:disabled {
+  background: transparent;
+  color: var(--text-faint);
+  cursor: default;
+  opacity: 0.8;
+}
+
+.dsh-chat-run-setting-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dsh-chat-run-setting-chevron {
+  align-items: center;
+  color: var(--text-faint);
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 12px;
+  width: 12px;
+}
+
+.dsh-chat-run-setting-chevron svg {
+  height: 12px;
+  width: 12px;
+}
+
+button.dsh-chat-send {
+  align-items: center;
+  background: var(--interactive-accent);
+  border: 0;
+  border-radius: 6px;
+  box-shadow: none;
+  color: var(--text-on-accent);
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: var(--font-ui-small);
+  gap: 4px;
+  height: 30px;
+  justify-content: center;
+  margin-left: auto;
+  padding: 0 10px;
+}
+
+button.dsh-chat-send:hover:not(:disabled) {
+  background: var(--interactive-accent-hover);
+}
+
+/* Keep the accent colour when idle-but-not-ready; only dim it slightly. */
+button.dsh-chat-send:disabled {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  cursor: default;
+  opacity: 0.6;
+}
+
+button.dsh-chat-send.is-stopping {
+  background: var(--background-modifier-error);
+  color: var(--text-on-accent);
+  opacity: 1;
+}
+
+.dsh-chat-send-icon {
+  align-items: center;
+  display: inline-flex;
+  height: 15px;
+  width: 15px;
+}
+
+.dsh-chat-send-icon svg {
+  height: 15px;
+  width: 15px;
+}
+
+.dsh-chat-send-label {
+  line-height: 1;
+}
+
+/* Modals ------------------------------------------------------------------ */
+
+.dsh-chat-log {
+  background: var(--background-secondary);
+  border-radius: var(--radius-s);
+  font-size: var(--font-ui-smaller);
+  max-height: 55vh;
+  overflow: auto;
+  padding: 8px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.dsh-chat-modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.dsh-chat-session-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.dsh-chat-session-row {
+  align-items: center;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s);
+  display: flex;
+  gap: 8px;
+  padding: 6px 8px;
+}
+
+.dsh-chat-session-id {
+  color: var(--text-normal);
+  flex: 0 0 auto;
+  font-family: var(--font-monospace);
+  font-size: var(--font-ui-smaller);
+}
+
+.dsh-chat-session-cwd {
+  color: var(--text-faint);
+  flex: 1 1 auto;
+  font-size: var(--font-ui-smaller);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dsh-chat-status-bar {
+  cursor: pointer;
+}
+
+/* Settings ---------------------------------------------------------------- */
+
+.dsh-settings {
+  margin: 0 auto;
+  max-width: 760px;
+  width: 100%;
+}
+
+.dsh-settings-hero {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 4px 0 18px;
+  padding: 14px 16px;
+}
+
+.dsh-settings-hero-head {
+  align-items: flex-start;
+  display: flex;
+  gap: 10px;
+}
+
+.dsh-settings-hero-icon {
+  align-items: center;
+  background: color-mix(in srgb, var(--interactive-accent) 18%, var(--background-primary));
+  border-radius: 8px;
+  color: var(--interactive-accent);
+  display: flex;
+  flex: 0 0 auto;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.dsh-settings-hero-icon svg {
+  height: 20px;
+  width: 20px;
+}
+
+.dsh-settings-hero-copy {
+  min-width: 0;
+}
+
+.dsh-settings-hero-title {
+  font-size: var(--font-ui-medium);
+  font-weight: 700;
+}
+
+.dsh-settings-hero-subtitle {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  margin-top: 2px;
+}
+
+.dsh-settings-hero-version {
+  color: var(--text-faint);
+  font-size: var(--font-ui-smaller);
+  margin-top: 2px;
+}
+
+.dsh-settings-status {
+  align-items: center;
+  color: var(--text-muted);
+  display: flex;
+  font-size: var(--font-ui-smaller);
+  gap: 6px;
+}
+
+.dsh-settings-status-path {
+  color: var(--text-faint);
+  font-family: var(--font-monospace);
+  font-size: var(--font-ui-smaller);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dsh-settings-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dsh-settings-card {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 10px;
+  margin-bottom: 16px;
+  padding: 0 16px;
+}
+
+.dsh-settings-card-head {
+  padding: 12px 0 2px;
+}
+
+.dsh-settings-card-title {
+  font-size: var(--font-ui-small);
+  font-weight: 600;
+}
+
+.dsh-settings-card-hint {
+  color: var(--text-faint);
+  font-size: var(--font-ui-smaller);
+  margin-top: 2px;
+}
+
+.dsh-settings-card .setting-item {
+  border-top: none;
+  padding: 10px 0;
+}
+
+.dsh-settings-card .setting-item + .setting-item {
+  border-top: 1px solid var(--background-modifier-border);
+}
+
+.dsh-settings-card .setting-item-name {
+  font-size: var(--font-ui-small);
+}
+
+.dsh-settings-card .setting-item-description {
+  font-size: var(--font-ui-smaller);
+  line-height: 1.45;
+}
+
+.dsh-settings-card .setting-item-control input[type="text"] {
+  max-width: 42vw;
+  width: 280px;
+}
+
+.dsh-settings-card .setting-item-control input.dsh-settings-number {
+  width: 90px;
+}
+
+.dsh-settings-card .setting-item-control textarea {
+  font-family: var(--font-monospace);
+  font-size: var(--font-ui-smaller);
+  max-width: 46vw;
+  min-height: 84px;
+  width: 340px;
+}
+
+.dsh-settings-warning .setting-item-name {
+  color: var(--text-warning);
+}
+
+.dsh-settings-advanced {
+  margin-top: 4px;
+}
+
+.dsh-settings-advanced > summary {
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: var(--font-ui-smaller);
+  padding: 6px 2px;
+}
+
+.dsh-settings-advanced[open] > summary {
+  margin-bottom: 8px;
+}
+
+.dsh-settings-advanced-card {
+  margin-bottom: 8px;
+}

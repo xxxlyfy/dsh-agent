@@ -1,0 +1,9 @@
+{
+  "id": "dsh-agent",
+  "name": "DSH Agent",
+  "version": "0.1.0",
+  "minAppVersion": "1.8.0",
+  "description": "Side-panel chat that drives DeepSeek Harness agents over ACP, with note context and tool approvals.",
+  "author": "xxxlyfy",
+  "isDesktopOnly": true
+}
